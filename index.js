@@ -1,10 +1,22 @@
-let myLeads = []
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js"
+import { getDatabase, 
+         ref,
+         push,
+         onValue,
+         remove } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js"
+
+const firebaseConfig = {
+    databaseURL: "https://leads-tracker-app-4330e-default-rtdb.asia-southeast1.firebasedatabase.app/"
+} 
+
+const app = initializeApp(firebaseConfig)
+const database = getDatabase(app)
+const referenceInDB = ref(database, "leads")
+
 const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
 const ulEl = document.querySelector("#ul-el")
 const deleteBtn = document.querySelector("#delete-btn")
-const tabBtn = document.querySelector("#tab-btn")
-
 
 function showMessage(msg, color = "red") {
     const msgBox = document.getElementById("msg-box")
@@ -16,59 +28,39 @@ function showMessage(msg, color = "red") {
     }, 3000)
 }
 
-const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
-
-if(leadsFromLocalStorage) {
-    myLeads = leadsFromLocalStorage
-    render(myLeads)
-}
-
-tabBtn.addEventListener("click", function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        const currentUrl = tabs[0].url
-
-        if(!myLeads.includes(currentUrl)) {
-            myLeads.push(currentUrl)
-            localStorage.setItem("myLeads", JSON.stringify(myLeads))
-            render(myLeads)
-        } else {
-            showMessage("Already saved!")
-        }
-    })
-})
-
-function render(leads) {
+function render(leadsObj) {
     let listItems = ""
-    for(let i = 0; i < leads.length; i++) {
+    for(const [key, value] of Object.entries(leadsObj)) {
         listItems += `
             <li>
-                <a href="${leads[i]}" target="_blank">
-                    ${leads[i]}
+                <a href="${value}" target="_blank">
+                    ${value}
                 </a>
-                <button class="delete-btn" data-index="${i}">❌</button>
+                <button class="delete-btn" data-key="${key}">❌</button>
             </li>
         `
-        // const li = document.createElement("li")
-        // li.textContent = leads[i]
-        // ulEl.append(li)
     }
     ulEl.innerHTML = listItems
 
     const deleteButtons = document.querySelectorAll(".delete-btn")
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", function() {
-            const index = parseInt(this.getAttribute("data-index"))
-            myLeads.splice(index, 1)
-            localStorage.setItem("myLeads", JSON.stringify(myLeads))
-            render(myLeads)
+            const key = this.getAttribute("data-key")
+            const itemRef = ref(database, `leads/${key}`)
+            remove(itemRef).then(() => {
+                showMessage("Lead deleted! ✅", "green")
+            })
         })
     })
 }
 
-deleteBtn.addEventListener("dblclick", function() {
-    localStorage.clear()
-    myLeads = []
-    render(myLeads)
+onValue(referenceInDB, function(snapshot) {
+    if (snapshot.exists()) {
+        const snapshotValues = snapshot.val()
+        render(snapshotValues)
+    } else {
+        ulEl.innerHTML = ""
+    }  
 })
 
 inputBtn.disabled = true
@@ -80,17 +72,32 @@ inputEl.addEventListener("input", function() {
     }
 })
 
+deleteBtn.addEventListener("dblclick", function() {
+    remove(referenceInDB)
+    ulEl.innerHTML = ""
+})
+
 inputBtn.addEventListener("click", function() {
     const inputVal = inputEl.value.trim()
-    if(inputVal) {
-        if(!myLeads.includes(inputVal)) {
-            myLeads.push(inputVal)
-            localStorage.setItem("myLeads", JSON.stringify(myLeads))
-            render(myLeads)
+    if(!inputVal) {
+        showMessage("Cannot add empty lead! ⚠️")
+        return
+    }
+
+    onValue(referenceInDB, function(snapshot) {
+        const snapshotValues = snapshot.val()
+        const leads = snapshotValues ? Object.values(snapshotValues) : []
+
+        if (leads.includes(inputVal)) {
+            showMessage("Already saved! ⚠️")
         } else {
-            showMessage("Already saved!")
+            push(referenceInDB, inputVal)
+            showMessage("Lead saved! ✅", "green")
         }
+
         inputEl.value = ""
         inputBtn.disabled = true
-    }    
+    }, {
+        onlyOnce: true
+    }) 
 })

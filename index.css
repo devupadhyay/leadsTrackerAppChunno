@@ -1,8 +1,8 @@
 body {
-    margin: 0;
+    margin: 0 auto;
     padding: 10px;
     font-family: Arial, Helvetica, sans-serif;
-    min-width: 400px;
+    max-width: 302px;
 }
 
 input {
@@ -40,7 +40,8 @@ button.delete-btn {
 }
 
 ul {
-    margin-top: 20px;
+    margin-top: 28px;
+    margin-bottom: 0;
     list-style: none;
     padding-left: 0;
 }
@@ -50,10 +51,16 @@ li {
 }
 
 a {
-    color: #5f9341;
+    color: #4340ff;
 }
 
 .msgBox {
-    font-size: 75%;
-    margin-bottom: 0;
+    font-size: 80%;
+    margin: 8px 0;
+    position: absolute;
+}
+
+label {
+    color: #5f9341;
+    font-weight: 900;
 }

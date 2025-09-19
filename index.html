@@ -3,16 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Chrome Extension</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <title>Leads Tracker</title>
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        <input type="text" id="input-el" placeholder="Search/Add URLs...">
+        <label for="input-el">Enter URL:</label>
+        <input type="text" id="input-el" placeholder="https://domain.com/">
         <button id="input-btn">SAVE INPUT</button>
-        <button id="tab-btn">SAVE TAB</button>
         <button id="delete-btn">DELETE ALL</button>
         <p id="msg-box" class="msgBox"></p>
         <ul id="ul-el"></ul>
-        <script src="index.js"></script>
+        <script type="module" src="index.js"></script>
     </body>
 </html>
