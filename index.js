@@ -48,7 +48,7 @@ function render(leadsObj) {
             const key = this.getAttribute("data-key")
             const itemRef = ref(database, `leads/${key}`)
             remove(itemRef).then(() => {
-                showMessage("Lead deleted! ✅", "green")
+                showMessage("✅ Lead deleted!", "goldenrod")
             })
         })
     })
@@ -75,12 +75,13 @@ inputEl.addEventListener("input", function() {
 deleteBtn.addEventListener("dblclick", function() {
     remove(referenceInDB)
     ulEl.innerHTML = ""
+    showMessage("✅ All Leads deleted!", "goldenrod")
 })
 
 inputBtn.addEventListener("click", function() {
     const inputVal = inputEl.value.trim()
     if(!inputVal) {
-        showMessage("Cannot add empty lead! ⚠️")
+        showMessage("⚠️ Cannot add empty lead!")
         return
     }
 
@@ -89,10 +90,10 @@ inputBtn.addEventListener("click", function() {
         const leads = snapshotValues ? Object.values(snapshotValues) : []
 
         if (leads.includes(inputVal)) {
-            showMessage("Already saved! ⚠️")
+            showMessage("⚠️ Already saved!")
         } else {
             push(referenceInDB, inputVal)
-            showMessage("Lead saved! ✅", "green")
+            showMessage("✅ Lead saved!", "green")
         }
 
         inputEl.value = ""
@@ -101,3 +102,11 @@ inputBtn.addEventListener("click", function() {
         onlyOnce: true
     }) 
 })
+
+setTimeout(() => {
+  const banner = document.getElementById("welcome-banner")
+  if (banner) {
+    banner.style.opacity = "0"
+    setTimeout(() => banner.remove(), 500) // remove from DOM after fade
+  }
+}, 3000)
