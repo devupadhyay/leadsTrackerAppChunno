@@ -55,15 +55,16 @@ a {
 }
 
 .msgBox {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  transition: opacity 0.3s ease;
-  z-index: 9999;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+    display: none;
 }
 
 
@@ -73,14 +74,14 @@ label {
 }
 
 #welcome-banner {
-  background-color: #fff8e1;
-  padding: 12px 20px;
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
-  color: #444;
-  border-bottom: 2px solid #fbc02d;
-  opacity: 1;
-  margin-bottom: 12px;
-  transition: opacity 0.5s ease-in-out;
+    background-color: #fff8e1;
+    padding: 12px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #444;
+    border-bottom: 2px solid #fbc02d;
+    opacity: 1;
+    margin-bottom: 12px;
+    transition: opacity 0.5s ease-in-out;
 }
