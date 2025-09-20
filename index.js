@@ -103,10 +103,10 @@ inputBtn.addEventListener("click", function() {
     }) 
 })
 
-setTimeout(() => {
-  const banner = document.getElementById("welcome-banner")
-  if (banner) {
-    banner.style.opacity = "0"
-    setTimeout(() => banner.remove(), 500) // remove from DOM after fade
-  }
-}, 3000)
+// setTimeout(() => {
+//   const banner = document.getElementById("welcome-banner")
+//   if (banner) {
+//     banner.style.opacity = "0"
+//     setTimeout(() => banner.remove(), 500) // remove from DOM after fade
+//   }
+// }, 3000)
